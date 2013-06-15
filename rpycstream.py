@@ -10,7 +10,6 @@ RESPONSE_PATTERN = '[[%s],%s]\n'
 __all__ = ['RPC', 'NullStream']
 
 class RPC(object):
-
     def __init__(self, target={}, stdin=None, stdout=None, pattern='%s', listen=True):
         # attributes
         self.target      = target
@@ -128,7 +127,6 @@ class Wrapper(object):
     pass
 
 class Listener(object):
-
     def __init__(self, rpc, stream=None, delay=0.002):
         self.__rpc = rpc
         self.__stream = stream or sys.stdin
@@ -142,7 +140,6 @@ class Listener(object):
             time.sleep(delay)
 
 class NullStream(object):
-
     def write(self, *args, **kwargs):
         pass
 
