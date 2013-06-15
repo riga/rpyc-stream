@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, time, json
+import sys, json
 from threading import Thread
 
 __all__ = ['RPC', 'NullStream']
@@ -136,7 +136,6 @@ class Listener(object):
             line = self.__stream.readline().rstrip()
             if line:
                 self.__rpc._handle(line)
-            time.sleep(delay)
 
 class NullStream(object):
     def write(self, *args, **kwargs):
