@@ -2,13 +2,13 @@
 import sys, time, json
 from threading import Thread
 
-# string formatting is faster than json.dumps
-REQUEST_PATTERN  = '["%s",%s,%s]\n'
-RESPONSE_PATTERN = '[[%s],%s]\n'
-
 __all__ = ['RPC', 'NullStream']
 
 class RPC(object):
+    # string formatting is faster than json.dumps
+    REQUEST_PATTERN  = '["%s",%s,%s]\n'
+    RESPONSE_PATTERN = '[[%s],%s]\n'
+
     def __init__(self, target={}, stdin=None, stdout=None, pattern='%s', listen=True):
         # attributes
         self.target      = target
@@ -56,9 +56,9 @@ class RPC(object):
             try:
                 result = self.__handler(self.pattern % name, args)
                 if cbid != -1:
-                    data = RESPONSE_PATTERN % ('null,%s' % json.dumps(result), cbid)
+                    data = RPC.RESPONSE_PATTERN % ('null,%s' % json.dumps(result), cbid)
             except Exception as e:
-                data = RESPONSE_PATTERN % (RPC.flatten_error(e), cbid)
+                data = RPC.RESPONSE_PATTERN % (RPC.flatten_error(e), cbid)
             if data:
                 self.__stdout.write(data)
                 self.__stdout.flush()
@@ -79,7 +79,7 @@ class RPC(object):
         if cb:
             self.__count += 1
             self.__callbacks[self.__count] = cb
-        self.__stdout.write(REQUEST_PATTERN % (name, json.dumps(args), self.__count if cb else -1))
+        self.__stdout.write(RPC.REQUEST_PATTERN % (name, json.dumps(args), self.__count if cb else -1))
         self.__stdout.flush()
         # unlikely but consistent
         if cb and self.__count == sys.maxint:
