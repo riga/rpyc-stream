@@ -7,6 +7,8 @@ from threading import Thread
 REQUEST_PATTERN  = '["%s",%s,%s]\n'
 RESPONSE_PATTERN = '[[%s],%s]\n'
 
+__all__ = ['RPC', 'NullStream']
+
 class RPC(object):
 
     def __init__(self, target={}, stdin=None, stdout=None, pattern='%s', listen=True):
