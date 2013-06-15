@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import sys, time, json
-from subprocess import Popen, PIPE, STDOUT
 from threading import Thread
 
 # string formatting is faster than json.dumps
