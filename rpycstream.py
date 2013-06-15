@@ -100,8 +100,8 @@ class RPC(object):
     def parse(line):
         # a line looks like '[name,args,cbid]'
         cbid, args, name = 0, [], None
-        data = json.loads(line)
         try:
+            data = json.loads(line)
             cbid = data.pop()
             args = data.pop()
             name = data.pop()
