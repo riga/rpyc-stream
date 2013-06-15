@@ -1,7 +1,7 @@
 {
     "name": "rpyc-stream",
     "preferGlobal": false,
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": "Marcel Rieger <marcelrieger@me.com>",
     "description": "A simple, one-file Python RPC System that is based on Streams allowing for cross-language/SSH usage.",
     "main": "rpycstream/__init__.py",
@@ -18,5 +18,13 @@
         "dominictarr",
         "cross"
     ],
-    "license": "MIT/GPLv2"
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/mit"
+        }, {
+            "type": "GPL",
+            "url": "http://www.opensource.org/licenses/gpl-2.0"
+        }
+    ]
 }
