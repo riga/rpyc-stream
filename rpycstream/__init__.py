@@ -134,12 +134,12 @@ class Wrapper(object):
     pass
 
 class Listener(object):
-    def __init__(self, rpc, stream=None, delay=0.002):
+    def __init__(self, rpc, stream=None):
         self.__rpc = rpc
         self.__stream = stream or sys.stdin
-        self.__listen(delay)
+        self.__listen()
 
-    def __listen(self, delay):
+    def __listen(self):
         while self.__rpc._listen:
             line = self.__stream.readline().rstrip()
             if line:
