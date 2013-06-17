@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, json
+import sys, time, json
 from threading import Thread
 
 __all__ = ['RPC', 'NullStream']
@@ -85,8 +85,14 @@ class RPC(object):
         if cb and self.__count == sys.maxint:
             self.__count = 0
 
-    def wrap(self, keys=[]):
+    def wrap(self, keys=[], *args):
         wrapper = Wrapper()
+        keys = keys if isinstance(keys, (list, tuple)) else [keys]
+        for arg in args:
+            if isinstance(arg, (list, tuple)):
+                keys += arg
+            else:
+                keys.append(arg)
         for key in keys:
             def cb(*args):
                 args, cb = list(args), None
@@ -111,6 +117,8 @@ class RPC(object):
 
     @staticmethod
     def expand_error(err):
+        if not err:
+            return None
         e = Exception(err.get('message', 'ERROR'))
         for key, value in err.items():
             setattr(e, key, value)
