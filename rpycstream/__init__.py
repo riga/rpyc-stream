@@ -126,7 +126,7 @@ class RPC(object):
 
     @staticmethod
     def flatten_error(err):
-        if err is None:
+        if not err:
             return 'null'
         return '{"message":"%s"}' % err.message
 
