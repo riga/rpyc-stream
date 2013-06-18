@@ -9,9 +9,10 @@ class RPC(object):
     REQUEST_PATTERN  = '["%s",%s,%s]\n'
     RESPONSE_PATTERN = '[[%s],%s]\n'
 
-    def __init__(self, target={}, stdin=None, stdout=None, pattern='%s', listen=True):
+    def __init__(self, target={}, sameSigs=False, stdin=None, stdout=None, pattern='%s', listen=True):
         # attributes
         self.target      = target
+        self.sameSigs    = sameSigs
         self.pattern     = pattern
         self.__callbacks = {}
         self.__count     = 0
@@ -54,6 +55,8 @@ class RPC(object):
             # request
             data = None
             try:
+                # use same signature or all args in an array?
+                args = args if self.sameSigs and isinstance(args, list) else [args]
                 result = self.__handler(self.pattern % name, args)
                 if cbid != -1:
                     data = RPC.RESPONSE_PATTERN % ('null,%s' % json.dumps(result), cbid)
@@ -126,7 +129,7 @@ class RPC(object):
 
     @staticmethod
     def flatten_error(err):
-        if not err:
+        if not isinstance(err, Exception):
             return 'null'
         return '{"message":"%s"}' % err.message
 
@@ -134,12 +137,12 @@ class Wrapper(object):
     pass
 
 class Listener(object):
-    def __init__(self, rpc, stream=None):
+    def __init__(self, rpc, stream=None, delay=0.002):
         self.__rpc = rpc
         self.__stream = stream or sys.stdin
-        self.__listen()
+        self.__listen(delay)
 
-    def __listen(self):
+    def __listen(self, delay):
         while self.__rpc._listen:
             line = self.__stream.readline().rstrip()
             if line:
